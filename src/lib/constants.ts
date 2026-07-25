@@ -1,9 +1,9 @@
 export const siteConfig = {
-  name: "Milepost Studio",
+  name: "Nuvanto",
   description: "Your business's first mile online.",
   contact: {
     phone: "+91 98765 43210",
-    email: "hello@milepost.studio", // placeholder
+    email: "hello@nuvanto.studio", // placeholder
     address: "Nagpur, India"
   },
   socials: {
@@ -34,10 +34,10 @@ export const homeContent = {
   ],
   workPreview: {
     eyebrow: "Featured work",
-    heading: "Rang Mahal",
-    body: "A premium restaurant website for a Nagpur client — full menu, gallery, and location, built for a real dining crowd.",
-    image: "Rang Mahal screenshot placeholder",
-    linkText: "View all work"
+    heading: "Aashri Restaurant",
+    body: "A cinematic, premium scroll-based restaurant website featuring masonry photo collages, full menus, and seamless banquet reservations.",
+    image: "/aashri.png",
+    linkText: "View project details"
   },
   processPreview: {
     eyebrow: "How we work",
@@ -69,9 +69,13 @@ export const workContent = {
   eyebrow: "Selected work",
   heading: "A few things we've built.",
   items: [
-    { category: "Restaurant", title: "Rang Mahal", body: "A premium restaurant website for a Nagpur client — full menu, gallery, and location, built for a real dining crowd.", image: "Rang Mahal screenshot placeholder" },
-    { category: "NGO", title: "DonateBridge", body: "A donation platform connecting NGOs with people giving away household items — built for clarity and trust.", image: "DonateBridge screenshot placeholder" },
-    { category: "Community", title: "BloodConnect", body: "A blood-donor matching platform — a real-world system built to move quickly when it matters most.", image: "BloodConnect screenshot placeholder" }
+    { 
+      category: "Restaurant", 
+      title: "Aashri Restaurant", 
+      body: "A cinematic, premium scroll-based restaurant website featuring masonry photo collages, full menus, and seamless banquet reservations.", 
+      image: "/aashri.png",
+      href: "https://aashri-restaurant.vercel.app/"
+    }
   ],
   footnote: "More case studies added as we launch.",
   ctaBand: {
@@ -108,6 +112,6 @@ export const contactContent = {
 };
 
 export const footerContent = {
-  line1: "Milepost Studio — Nagpur, India",
+  line1: "Nuvanto — Nagpur, India",
   line2: "© 2026 — built with care, not templates"
 };

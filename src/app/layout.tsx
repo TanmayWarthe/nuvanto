@@ -10,7 +10,7 @@ const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-fraunces", wei
 const jetbrains = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains", weight: ["400", "500"] });
 
 export const metadata: Metadata = {
-  title: "Milepost Studio",
+  title: "Nuvanto",
   description: "Your business's first mile online.",
 };
 

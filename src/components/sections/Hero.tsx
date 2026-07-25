@@ -1,39 +1,53 @@
 import { homeContent } from "@/lib/constants";
 import { Button } from "@/components/ui/Button";
-import { SectionEyebrow } from "@/components/ui/SectionEyebrow";
 import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
-import { MilestoneMark } from "@/components/ui/MilestoneMark";
 
 export function Hero() {
   return (
-    <section className="relative min-h-[100svh] flex items-center justify-center pt-24 pb-12 overflow-hidden">
-      <div className="max-w-5xl mx-auto px-6 lg:px-8 w-full">
-        <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
+    <section className="relative min-h-[100svh] flex flex-col justify-center pt-32 pb-16">
+      {/* Subtle Background Glow */}
+      <div className="absolute top-[-20%] right-[-10%] w-[80%] h-[80%] bg-gold/10 blur-[150px] rounded-full pointer-events-none" />
+      <div className="absolute bottom-[-20%] left-[-10%] w-[60%] h-[60%] bg-gold-deep/5 blur-[120px] rounded-full pointer-events-none" />
+      
+      {/* The Zero Watermark */}
+      <div className="absolute right-[-15%] md:right-[-5%] top-1/2 -translate-y-1/2 pointer-events-none select-none overflow-hidden mix-blend-screen">
+        <span className="font-display text-[25rem] md:text-[40rem] text-gold-light opacity-[0.03] leading-none italic font-light tracking-tighter">
+          0
+        </span>
+      </div>
+
+      <div className="max-w-6xl mx-auto px-6 lg:px-8 w-full relative z-10">
+        <div className="max-w-3xl">
           
           <RevealOnScroll>
-            <SectionEyebrow className="mb-8 !text-gold">{homeContent.hero.eyebrow}</SectionEyebrow>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-light leading-[1.1] tracking-tight text-ink-text mb-8 text-balance">
-              {homeContent.hero.headline}
+            <div className="flex items-center gap-6 mb-10 md:mb-14">
+              <div className="h-px w-16 bg-gold/40" />
+              <span className="font-mono text-xs md:text-sm tracking-[0.2em] uppercase text-gold">
+                {homeContent.hero.eyebrow}
+              </span>
+            </div>
+          </RevealOnScroll>
+
+          <RevealOnScroll delay={0.1}>
+            <h1 className="text-5xl md:text-7xl lg:text-[6rem] font-display font-light leading-[1.02] tracking-tight text-ink-text mb-10 text-balance">
+              Your business&apos;s <br className="hidden md:block" />
+              <span className="italic text-gold-light">first mile</span> online.
             </h1>
           </RevealOnScroll>
           
-          <RevealOnScroll delay={0.1}>
-            <p className="text-sm md:text-base text-ink-text/70 leading-relaxed mb-12 max-w-2xl mx-auto font-light">
+          <RevealOnScroll delay={0.2}>
+            <p className="text-base md:text-xl text-ink-text/60 leading-relaxed mb-14 max-w-xl font-light">
               {homeContent.hero.subhead}
             </p>
           </RevealOnScroll>
           
-          <RevealOnScroll delay={0.2} className="flex flex-col sm:flex-row gap-6 mb-20">
-            <Button href={homeContent.hero.ctaPrimary.href} variant="primary">
+          <RevealOnScroll delay={0.3} className="flex flex-col sm:flex-row gap-6">
+            <Button href={homeContent.hero.ctaPrimary.href} variant="primary" className="!px-10 !py-4 text-sm tracking-widest uppercase">
               {homeContent.hero.ctaPrimary.label}
             </Button>
-            <Button href={homeContent.hero.ctaSecondary.href} variant="ghost" className="!text-ink-text !border-ink-text/30 hover:!border-gold hover:!text-gold hover:!bg-transparent">
+            <Button href={homeContent.hero.ctaSecondary.href} variant="ghost" className="!px-10 !py-4 text-sm tracking-widest uppercase !text-ink-text !border-ink-text/30 hover:!border-gold hover:!text-gold hover:!bg-transparent">
               {homeContent.hero.ctaSecondary.label}
             </Button>
-          </RevealOnScroll>
-
-          <RevealOnScroll delay={0.3} className="flex justify-center">
-            <MilestoneMark className="scale-[1.5] md:scale-[2.5]" />
           </RevealOnScroll>
           
         </div>

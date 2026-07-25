@@ -2,6 +2,7 @@ import { homeContent } from "@/lib/constants";
 import { SectionEyebrow } from "@/components/ui/SectionEyebrow";
 import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
 import { Button } from "@/components/ui/Button";
+import Image from "next/image";
 
 export function WorkPreview() {
   const content = homeContent.workPreview;
@@ -10,10 +11,15 @@ export function WorkPreview() {
       <div className="max-w-5xl mx-auto px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <RevealOnScroll className="order-2 lg:order-1">
-            <div className="rounded-2xl overflow-hidden bg-background border border-hairline relative aspect-[4/3] shadow-sm">
-              <div className="absolute inset-0 flex items-center justify-center bg-surface-hover/30">
-                <span className="font-mono text-sm text-text-faint">{content.image}</span>
-              </div>
+            <div className="rounded-2xl overflow-hidden bg-background border border-hairline relative aspect-[4/3] shadow-sm group">
+              <Image 
+                src={content.image}
+                alt={content.heading}
+                fill
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+              />
+              <div className="absolute inset-0 border border-black/5 rounded-2xl pointer-events-none" />
             </div>
           </RevealOnScroll>
           <RevealOnScroll delay={0.1} className="order-1 lg:order-2">

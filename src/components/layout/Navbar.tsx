@@ -34,32 +34,45 @@ export function Navbar() {
   const isDarkBg = !isScrolled && pathname === "/";
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ease-out ${isScrolled ? "bg-background/85 backdrop-blur-xl border-b border-hairline py-4 shadow-sm" : "bg-transparent py-8"}`}>
-      <div className="max-w-6xl mx-auto px-6 lg:px-8 flex items-center justify-between">
-        <Link href="/" className={`font-display text-2xl font-medium tracking-tight transition-colors duration-300 ${isDarkBg ? "text-ink-text hover:text-gold" : "text-text-primary hover:text-gold"}`}>
+    <header className="fixed top-4 md:top-6 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-5xl transition-all duration-500 ease-out">
+      <div 
+        className={`
+          flex items-center justify-between px-5 py-3 md:px-6 md:py-3.5 rounded-full 
+          backdrop-blur-2xl border transition-all duration-500
+          ${isScrolled 
+            ? "bg-background/80 border-hairline shadow-[0_8px_30px_rgb(0,0,0,0.04)]" 
+            : isDarkBg 
+              ? "bg-white/5 border-white/10 shadow-none" 
+              : "bg-black/5 border-black/10 shadow-none"
+          }
+        `}
+      >
+        <Link href="/" className={`font-display text-xl md:text-2xl font-light tracking-wide transition-colors duration-300 ${isDarkBg ? "text-ink-text hover:text-gold" : "text-text-primary hover:text-gold"}`}>
           {siteConfig.name}
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center space-x-2">
+        <nav className="hidden md:flex items-center space-x-1 bg-black/5 dark:bg-white/5 rounded-full px-2 py-1">
           {siteConfig.navLinks.map((link) => {
             const isActive = pathname === link.href;
-            const linkColor = isActive ? "text-gold" : isDarkBg ? "text-ink-text/80 hover:text-gold" : "text-text-secondary hover:text-gold";
+            const linkColor = isActive 
+              ? isDarkBg ? "text-ink-text" : "text-text-primary"
+              : isDarkBg ? "text-ink-text/60 hover:text-ink-text" : "text-text-secondary hover:text-text-primary";
             
             return (
               <Link 
                 key={link.name} 
                 href={link.href} 
-                className="relative px-3 py-2 text-sm font-medium transition-colors duration-300"
+                className={`relative px-4 py-2 text-[0.7rem] uppercase tracking-[0.1em] font-medium transition-colors duration-300 ${linkColor}`}
               >
-                <span className={`relative z-10 ${linkColor}`}>
+                <span className="relative z-10">
                   {link.name}
                 </span>
                 {isActive && (
                   <motion.span 
-                    layoutId="navbar-active"
-                    className="absolute left-3 right-3 -bottom-1 h-[2px] bg-gold"
-                    transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                    layoutId="navbar-active-pill"
+                    className={`absolute inset-0 rounded-full ${isDarkBg ? "bg-white/10" : "bg-black/5"}`}
+                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
                   />
                 )}
               </Link>
@@ -68,16 +81,27 @@ export function Navbar() {
         </nav>
 
         <div className="hidden md:block">
-          <Button href="/contact" variant="primary" magnetic={false} className="shadow-none !py-2.5 !px-5">Start a project</Button>
+          <Button 
+            href="/contact" 
+            variant={isDarkBg && !isScrolled ? "ghost" : "primary"} 
+            magnetic={true} 
+            className={`shadow-none !py-2.5 !px-6 text-[0.7rem] uppercase tracking-[0.1em] rounded-full transition-all duration-300 ${
+              isDarkBg && !isScrolled
+                ? "!text-ink-text !border-ink-text/30 hover:!border-gold hover:!text-gold hover:!bg-white/5" 
+                : "hover:scale-105"
+            }`}
+          >
+            Start a project
+          </Button>
         </div>
 
         {/* Mobile Toggle */}
         <button 
-          className={`md:hidden p-2 transition-colors duration-300 ${isDarkBg && !mobileMenuOpen ? "text-ink-text" : "text-text-primary"}`}
+          className={`md:hidden p-2 rounded-full transition-colors duration-300 ${isDarkBg && !mobileMenuOpen ? "text-ink-text bg-white/5" : "text-text-primary bg-black/5"}`}
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label="Toggle menu"
         >
-          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>
 
@@ -85,30 +109,29 @@ export function Navbar() {
       <AnimatePresence>
         {mobileMenuOpen && (
           <>
-            {/* Backdrop */}
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 top-[72px] bg-ink/20 backdrop-blur-sm md:hidden"
+              className="fixed inset-[-100vh] bg-ink/40 backdrop-blur-md md:hidden -z-10"
               onClick={() => setMobileMenuOpen(false)}
             />
             
             <motion.div 
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10, transition: { duration: 0.2 } }}
+              initial={{ opacity: 0, scale: 0.95, y: -20 }}
+              animate={{ opacity: 1, scale: 1, y: 10 }}
+              exit={{ opacity: 0, scale: 0.95, y: -20, transition: { duration: 0.2 } }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              className="absolute top-full left-0 right-0 bg-background border-b border-hairline p-6 flex flex-col md:hidden shadow-2xl"
+              className="absolute top-full left-0 right-0 bg-background/95 backdrop-blur-xl border border-hairline rounded-3xl p-6 flex flex-col md:hidden shadow-2xl overflow-hidden"
             >
-              <nav className="flex flex-col space-y-6 pt-2 pb-8">
+              <nav className="flex flex-col space-y-2 pt-2 pb-8">
                 {siteConfig.navLinks.map((link) => {
                   const isActive = pathname === link.href;
                   return (
                     <Link 
                       key={link.name} 
                       href={link.href} 
-                      className={`text-3xl font-display font-light transition-colors ${isActive ? "text-gold" : "text-text-primary hover:text-gold"}`}
+                      className={`text-2xl font-display font-light p-4 rounded-2xl transition-colors ${isActive ? "bg-surface text-gold" : "text-text-primary hover:bg-surface/50 hover:text-gold"}`}
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       {link.name}
@@ -116,7 +139,7 @@ export function Navbar() {
                   );
                 })}
               </nav>
-              <Button href="/contact" variant="primary" className="w-full !py-4 text-base" onClick={() => setMobileMenuOpen(false)}>
+              <Button href="/contact" variant="primary" className="w-full !py-4 text-sm tracking-widest uppercase rounded-full" onClick={() => setMobileMenuOpen(false)}>
                 Start a project
               </Button>
             </motion.div>

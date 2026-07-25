@@ -7,15 +7,15 @@ import { ProcessPreview } from "@/components/sections/ProcessPreview";
 import { CtaBand } from "@/components/sections/CtaBand";
 import { homeContent } from "@/lib/constants";
 import { Divider } from "@/components/ui/Divider";
-import { WebLatticeBackground } from "@/components/ui/WebLatticeBackground";
+
 
 export default function Home() {
   return (
     <main>
-      <WebLatticeBackground>
+      <div className="bg-[#0a0806] w-full text-ink-text overflow-hidden relative">
         <Hero />
         <Marquee />
-      </WebLatticeBackground>
+      </div>
       <StudioIntro />
       <div className="px-6 lg:px-8 max-w-5xl mx-auto"><Divider /></div>
       <Services />

@@ -9,8 +9,8 @@ interface WebLatticeBackgroundProps {
 
 export function WebLatticeBackground({ children }: WebLatticeBackgroundProps) {
   const shouldReduceMotion = useReducedMotion();
-  const spokes = 16;
-  const rings = 5;
+  const spokes = 32;
+  const rings = 12;
 
   return (
     <div className="relative w-full bg-[#0E0B08] overflow-hidden">
@@ -19,13 +19,13 @@ export function WebLatticeBackground({ children }: WebLatticeBackgroundProps) {
         <motion.div
           className="relative w-[150vw] h-[150vw] md:w-[100vw] md:h-[100vw] opacity-80"
           animate={shouldReduceMotion ? {} : { rotate: 360 }}
-          transition={{ duration: 200, repeat: Infinity, ease: "linear" }}
+          transition={{ duration: 400, repeat: Infinity, ease: "linear" }}
           style={{
-            maskImage: "radial-gradient(circle at center, black 0%, transparent 60%)",
-            WebkitMaskImage: "radial-gradient(circle at center, black 0%, transparent 60%)",
+            maskImage: "radial-gradient(circle at center, black 0%, transparent 65%)",
+            WebkitMaskImage: "radial-gradient(circle at center, black 0%, transparent 65%)",
           }}
         >
-          <svg viewBox="0 0 100 100" className="w-full h-full text-gold">
+          <svg viewBox="0 0 100 100" className="w-full h-full text-gold-light">
             {/* Spokes */}
             {Array.from({ length: spokes }).map((_, i) => (
               <line
@@ -35,8 +35,8 @@ export function WebLatticeBackground({ children }: WebLatticeBackgroundProps) {
                 x2={50 + 50 * Math.cos((i * 2 * Math.PI) / spokes)}
                 y2={50 + 50 * Math.sin((i * 2 * Math.PI) / spokes)}
                 stroke="currentColor"
-                strokeWidth="0.1"
-                className="opacity-35"
+                strokeWidth="0.05"
+                className="opacity-20"
               />
             ))}
             {/* Rings */}
@@ -51,8 +51,8 @@ export function WebLatticeBackground({ children }: WebLatticeBackgroundProps) {
                   r={radius}
                   fill="none"
                   stroke="currentColor"
-                  strokeWidth="0.1"
-                  style={{ opacity }}
+                  strokeWidth="0.05"
+                  style={{ opacity: opacity * 0.7 }}
                 />
               );
             })}
