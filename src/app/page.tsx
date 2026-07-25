@@ -12,7 +12,7 @@ import { Divider } from "@/components/ui/Divider";
 export default function Home() {
   return (
     <main>
-      <div className="bg-[#0a0806] w-full text-ink-text overflow-hidden relative">
+      <div id="home-dark-hero" className="bg-[#0a0806] w-full text-ink-text overflow-hidden relative">
         <Hero />
         <Marquee />
       </div>
@@ -25,3 +25,4 @@ export default function Home() {
     </main>
   );
 }
+
