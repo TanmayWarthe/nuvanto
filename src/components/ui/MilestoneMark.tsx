@@ -1,10 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
-
 export function MilestoneMark({ className = "" }: { className?: string }) {
-  const shouldReduceMotion = useReducedMotion();
-
   return (
     <div className={`relative flex items-center justify-center w-24 h-24 md:w-32 md:h-32 ${className}`}>
       <svg

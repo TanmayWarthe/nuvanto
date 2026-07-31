@@ -1,23 +1,29 @@
 "use client";
 
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { usePathname } from "next/navigation";
+import { useRef } from "react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 
 export default function Template({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
-  const shouldReduceMotion = useReducedMotion();
+  const container = useRef<HTMLDivElement>(null);
+  
+  useGSAP(() => {
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) {
+      gsap.set(container.current, { opacity: 1 });
+      return;
+    }
+    
+    gsap.fromTo(container.current, 
+      { opacity: 0, y: 12, scale: 0.98 }, 
+      { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "power3.out" }
+    );
+  }, { scope: container });
 
   return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={pathname}
-        initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 12, scale: 0.98 }}
-        animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0, scale: 1 }}
-        exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -12, scale: 0.98 }}
-        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-      >
-        {children}
-      </motion.div>
-    </AnimatePresence>
+    <div ref={container} style={{ opacity: 0 }}>
+      {children}
+    </div>
   );
 }

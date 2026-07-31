@@ -1,9 +1,9 @@
 export const siteConfig = {
-  name: "Nuvanto",
+  name: "Navunto",
   description: "Your business's first mile online.",
   contact: {
     phone: "+91 98765 43210",
-    email: "hello@nuvanto.studio", // placeholder
+    email: "hello@navunto.studio", // placeholder
     address: "Nagpur, India"
   },
   socials: {
@@ -11,6 +11,7 @@ export const siteConfig = {
   },
   navLinks: [
     { name: "Studio", href: "/studio" },
+    { name: "Team", href: "/team" },
     { name: "Work", href: "/work" },
     { name: "Process", href: "/process" },
     { name: "Contact", href: "/contact" },
@@ -112,6 +113,6 @@ export const contactContent = {
 };
 
 export const footerContent = {
-  line1: "Nuvanto — Nagpur, India",
+  line1: "Navunto — Nagpur, India",
   line2: "© 2026 — built with care, not templates"
 };

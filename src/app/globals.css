@@ -2,18 +2,21 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
-  --color-background: #FBF7EE;
-  --color-surface: #F4EEDD;
-  --color-surface-hover: #EDE3C8;
-  --color-text-primary: #241C10;
-  --color-text-secondary: #6B5E48;
-  --color-text-faint: #9C8F72;
-  --color-gold: #C9A227;
-  --color-gold-light: #E0C465;
-  --color-gold-deep: #A5811C;
-  --color-ink: #1B1610;
-  --color-ink-text: #F3ECDA;
-  --color-hairline: rgba(36, 28, 16, 0.10);
+  --color-background: #FDFBF7;
+  --color-surface: #FFFFFF;
+  --color-surface-hover: #F3F4F6;
+  --color-text-primary: #1A1A1A;
+  --color-text-secondary: #4A4A4A;
+  --color-text-faint: #8F8F8F;
+  --color-gold: #C89B53;
+  --color-gold-light: #DFB575;
+  --color-gold-deep: #A67C33;
+  --color-ink: #F3ECDA;
+  --color-ink-text: #1B1610;
+  --color-hairline: rgba(0, 0, 0, 0.08);
+  --color-accent-violet: #8B5CF6;
+  --color-accent-cyan: #06B6D4;
+  --color-foreground: #1A1A1A;
 
   --font-display: var(--font-fraunces), serif;
   --font-body: var(--font-inter), sans-serif;
@@ -22,8 +25,21 @@
 
 @layer base {
   :root {
-    --background: #FBF7EE;
-    --foreground: #241C10;
+    --background: #FDFBF7;
+    --foreground: #1A1A1A;
+  }
+  
+  .dark-theme {
+    --background: #09090B;
+    --foreground: #FAFAFA;
+    --color-background: #09090B;
+    --color-foreground: #FAFAFA;
+    --color-surface: #18181B;
+    --color-surface-hover: #27272A;
+    --color-text-primary: #FAFAFA;
+    --color-text-secondary: #A1A1AA;
+    --color-text-faint: #71717A;
+    --color-hairline: rgba(250, 250, 250, 0.10);
   }
 
   html {
@@ -46,14 +62,14 @@
     width: 8px;
   }
   ::-webkit-scrollbar-track {
-    background: #FBF7EE;
+    background: var(--background);
   }
   ::-webkit-scrollbar-thumb {
-    background: #EDE3C8;
+    background: var(--surface-hover);
     border-radius: 4px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #C9A227;
+    background: var(--text-faint);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -69,5 +85,30 @@
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+  .glass {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+  }
+  .glass-hover:hover {
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(200, 155, 83, 0.4);
+  }
+  
+  .dark-theme .glass {
+    background: rgba(24, 24, 27, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .dark-theme .glass-hover:hover {
+    background: rgba(24, 24, 27, 0.8);
+    border: 1px solid rgba(200, 155, 83, 0.4);
+  }
+  .gradient-text {
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-image: linear-gradient(to right, var(--color-gold-deep), var(--color-gold-light));
   }
 }

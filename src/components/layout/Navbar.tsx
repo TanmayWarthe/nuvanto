@@ -5,37 +5,21 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { siteConfig } from "@/lib/constants";
 import { Button } from "@/components/ui/Button";
-import { motion, AnimatePresence } from "framer-motion";
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isOverDarkBg, setIsOverDarkBg] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollY = window.scrollY;
-      setIsScrolled(scrollY > 20);
-
-      if (pathname === "/") {
-        const heroEl = document.getElementById("home-dark-hero");
-        if (heroEl) {
-          const heroRect = heroEl.getBoundingClientRect();
-          // Navbar is ~75px tall. When dark hero bottom is above 75px, navbar is over the light cream section!
-          setIsOverDarkBg(heroRect.bottom > 75);
-        } else {
-          setIsOverDarkBg(scrollY < 750);
-        }
-      } else {
-        setIsOverDarkBg(false);
-      }
+      setIsScrolled(window.scrollY > 20);
     };
 
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [pathname]);
+  }, []);
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {
@@ -51,42 +35,20 @@ export function Navbar() {
 
   // Dynamic header background & border styling
   const getHeaderStyles = () => {
-    if (isOverDarkBg) {
-      return isScrolled
-        ? "bg-[#0a0806]/80 backdrop-blur-2xl border-b border-white/[0.08] py-4 md:py-4.5 shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
-        : "bg-transparent border-b border-transparent py-6 md:py-8";
-    } else {
-      return isScrolled
-        ? "bg-[#FBF7EE]/90 backdrop-blur-2xl border-b border-[#241C10]/10 py-4 md:py-4.5 shadow-[0_8px_30px_rgba(36,28,16,0.06)]"
-        : "bg-[#FBF7EE]/70 backdrop-blur-md border-b border-[#241C10]/06 py-6 md:py-8";
-    }
+    return isScrolled
+      ? "bg-background/80 backdrop-blur-2xl border-b border-hairline py-4 md:py-4.5 shadow-sm"
+      : "bg-transparent border-b border-transparent py-6 md:py-8";
   };
 
   const getLogoColor = () => {
-    if (mobileMenuOpen) return "text-ink-text hover:text-gold";
-    return isOverDarkBg
-      ? "text-[#F3ECDA] hover:text-gold"
-      : "text-[#241C10] hover:text-[#A5811C]";
+    if (mobileMenuOpen) return "text-foreground hover:text-gold";
+    return "text-foreground hover:text-gold";
   };
 
   const getNavLinkColor = (isActive: boolean) => {
-    if (mobileMenuOpen || isOverDarkBg) {
-      return isActive
-        ? "text-gold font-semibold"
-        : "text-[#F3ECDA]/70 hover:text-[#F3ECDA]";
-    } else {
-      return isActive
-        ? "text-[#A5811C] font-semibold"
-        : "text-[#6B5E48] hover:text-[#241C10]";
-    }
-  };
-
-  const getButtonStyles = () => {
-    if (isOverDarkBg) {
-      return "!text-gold !border-gold/40 hover:!border-gold hover:!bg-gold hover:!text-[#0a0806] shadow-[0_0_15px_rgba(201,162,39,0.1)] hover:shadow-[0_0_25px_rgba(201,162,39,0.35)]";
-    } else {
-      return "!text-[#241C10] !border-[#241C10]/30 hover:!border-[#241C10] hover:!bg-[#241C10] hover:!text-[#F3ECDA] shadow-[0_2px_12px_rgba(36,28,16,0.04)] hover:shadow-[0_6px_20px_rgba(36,28,16,0.15)]";
-    }
+    return isActive
+      ? "text-gold font-semibold"
+      : "text-foreground/70 hover:text-foreground";
   };
 
   return (
@@ -115,16 +77,15 @@ export function Navbar() {
               <Link
                 key={link.name}
                 href={link.href}
-                className={`relative py-1 text-[0.75rem] uppercase tracking-[0.2em] font-medium transition-colors duration-500 ${linkColor}`}
+                className={`relative py-1 text-[0.75rem] uppercase tracking-[0.2em] font-medium transition-colors duration-500 ${linkColor} group`}
               >
                 <span>{link.name}</span>
-                {isActive && (
-                  <motion.span
-                    layoutId="active-nav-line"
-                    className="absolute -bottom-1 left-0 right-0 h-[2px] bg-gradient-to-r from-gold-light via-gold to-gold-deep rounded-full shadow-[0_0_10px_rgba(201,162,39,0.5)]"
-                    transition={{ type: "spring", stiffness: 380, damping: 28 }}
-                  />
-                )}
+                <span 
+                  className={`absolute -bottom-1 left-0 right-0 h-[2px] bg-gradient-to-r from-gold-light via-gold to-gold-deep shadow-[0_0_10px_rgba(201,162,39,0.5)] rounded-full transition-all duration-300 ease-out ${
+                    isActive ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0 group-hover:opacity-50 group-hover:scale-x-75"
+                  }`} 
+                  style={{ transformOrigin: "center" }}
+                />
               </Link>
             );
           })}
@@ -136,7 +97,7 @@ export function Navbar() {
             href="/contact"
             variant="ghost"
             magnetic={true}
-            className={`!py-2.5 !px-6 text-[0.72rem] uppercase tracking-[0.18em] font-semibold rounded-full transition-all duration-500 ${getButtonStyles()}`}
+            className="!py-2.5 !px-6 text-[0.72rem] uppercase tracking-[0.18em] font-semibold transition-colors duration-300 !text-gold !border-gold/40 hover:!border-gold hover:!bg-gold hover:!text-background"
           >
             Start a project
           </Button>
@@ -144,30 +105,24 @@ export function Navbar() {
 
         {/* Mobile Toggle Button */}
         <button
-          className="md:hidden p-2 -mr-2 text-ink-text focus:outline-none z-50 group"
+          className="md:hidden p-2 -mr-2 text-foreground focus:outline-none z-50 group"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label="Toggle menu"
         >
           <div className="w-6 h-5 relative flex flex-col justify-between items-end">
-            <motion.span
-              animate={mobileMenuOpen ? { rotate: 45, y: 9, width: "100%" } : { rotate: 0, y: 0, width: "100%" }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-              className={`h-[1.5px] rounded-full inline-block transition-colors duration-500 ${
-                mobileMenuOpen || isOverDarkBg ? "bg-[#F3ECDA]" : "bg-[#241C10]"
+            <span
+              className={`h-[1.5px] rounded-full inline-block transition-all duration-300 ease-in-out origin-right bg-foreground ${
+                mobileMenuOpen ? "w-[120%] -rotate-45 -translate-y-[1px]" : "w-full"
               }`}
             />
-            <motion.span
-              animate={mobileMenuOpen ? { opacity: 0, x: -10 } : { opacity: 1, x: 0 }}
-              transition={{ duration: 0.2 }}
-              className={`h-[1.5px] w-4 rounded-full inline-block transition-colors duration-500 ${
-                mobileMenuOpen || isOverDarkBg ? "bg-[#F3ECDA]" : "bg-[#241C10]"
+            <span
+              className={`h-[1.5px] w-4 rounded-full inline-block transition-all duration-200 ease-in-out bg-foreground ${
+                mobileMenuOpen ? "opacity-0 w-0" : "opacity-100"
               }`}
             />
-            <motion.span
-              animate={mobileMenuOpen ? { rotate: -45, y: -9, width: "100%" } : { rotate: 0, y: 0, width: "70%" }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-              className={`h-[1.5px] rounded-full inline-block transition-colors duration-500 ${
-                mobileMenuOpen || isOverDarkBg ? "bg-[#F3ECDA]" : "bg-[#241C10]"
+            <span
+              className={`h-[1.5px] rounded-full inline-block transition-all duration-300 ease-in-out origin-right bg-foreground ${
+                mobileMenuOpen ? "w-[120%] rotate-45 translate-y-[1px]" : "w-[70%]"
               }`}
             />
           </div>
@@ -175,72 +130,59 @@ export function Navbar() {
       </div>
 
       {/* Mobile Menu Drawer */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
-            className="fixed inset-0 top-0 z-40 bg-[#0a0806]/98 backdrop-blur-3xl min-h-screen flex flex-col justify-between px-8 pt-28 pb-12 md:hidden"
-          >
-            {/* Background Ambient Glow */}
-            <div className="absolute top-1/4 right-10 w-72 h-72 bg-gold/10 rounded-full blur-[100px] pointer-events-none" />
+      <div 
+        className={`fixed inset-0 top-0 z-40 bg-background/98 backdrop-blur-3xl min-h-screen flex flex-col justify-between px-8 pt-28 pb-12 md:hidden transition-opacity duration-500 ease-out ${
+          mobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
+      >
+        {/* Background Ambient Glow */}
+        <div className="absolute top-1/4 right-10 w-72 h-72 bg-gold/10 rounded-full blur-[100px] pointer-events-none" />
 
-            <nav className="flex flex-col space-y-6">
-              {siteConfig.navLinks.map((link, idx) => {
-                const isActive = pathname === link.href;
-                return (
-                  <motion.div
-                    key={link.name}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    transition={{ delay: 0.1 + idx * 0.08, duration: 0.4 }}
-                  >
-                    <Link
-                      href={link.href}
-                      className={`group flex items-baseline space-x-4 text-3xl font-display font-light transition-colors duration-300 ${
-                        isActive ? "text-gold" : "text-ink-text hover:text-gold"
-                      }`}
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      <span className="font-mono text-xs uppercase tracking-widest text-gold/60 group-hover:text-gold">
-                        0{idx + 1}
-                      </span>
-                      <span>{link.name}</span>
-                    </Link>
-                  </motion.div>
-                );
-              })}
-            </nav>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              transition={{ delay: 0.4, duration: 0.4 }}
-              className="space-y-6 pt-8 border-t border-white/10"
-            >
-              <div className="space-y-1 text-xs font-mono uppercase tracking-widest text-text-faint">
-                <p>Nagpur, India — est. 2026</p>
-                <p>{siteConfig.contact.email}</p>
-              </div>
-
-              <Button
-                href="/contact"
-                variant="primary"
-                className="w-full !py-4 text-xs font-semibold tracking-[0.2em] uppercase rounded-full shadow-[0_0_30px_rgba(201,162,39,0.3)]"
-                onClick={() => setMobileMenuOpen(false)}
+        <nav className="flex flex-col space-y-6">
+          {siteConfig.navLinks.map((link, idx) => {
+            const isActive = pathname === link.href;
+            return (
+              <div 
+                key={link.name}
+                className={`transition-all duration-500 transform ${mobileMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-8 opacity-0"}`}
+                style={{ transitionDelay: `${100 + idx * 80}ms` }}
               >
-                Start a project
-              </Button>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                <Link
+                  href={link.href}
+                  className={`group flex items-baseline space-x-4 text-3xl font-display font-light transition-colors duration-300 ${
+                    isActive ? "text-gold" : "text-ink-text hover:text-gold"
+                  }`}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <span className="font-mono text-xs uppercase tracking-widest text-gold/60 group-hover:text-gold">
+                    0{idx + 1}
+                  </span>
+                  <span>{link.name}</span>
+                </Link>
+              </div>
+            );
+          })}
+        </nav>
+
+        <div 
+          className={`space-y-6 pt-8 border-t border-hairline transition-all duration-500 transform ${mobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}
+          style={{ transitionDelay: "400ms" }}
+        >
+          <div className="space-y-1 text-xs font-mono uppercase tracking-widest text-text-faint">
+            <p>Nagpur, India — est. 2026</p>
+            <p>{siteConfig.contact.email}</p>
+          </div>
+
+          <Button
+            href="/contact"
+            variant="primary"
+            className="w-full !py-4 text-xs font-semibold tracking-[0.2em] uppercase rounded-full shadow-[0_0_30px_rgba(201,162,39,0.3)]"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            Start a project
+          </Button>
+        </div>
+      </div>
     </header>
   );
 }
-
-

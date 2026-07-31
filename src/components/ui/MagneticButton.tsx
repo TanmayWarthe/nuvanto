@@ -1,7 +1,8 @@
 "use client";
 
-import { ReactNode, useRef, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { ReactNode, useRef } from "react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 
 interface MagneticButtonProps {
   children: ReactNode;
@@ -10,35 +11,49 @@ interface MagneticButtonProps {
 
 export function MagneticButton({ children, className = "" }: MagneticButtonProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const shouldReduceMotion = useReducedMotion();
+  
+  // Use a ref to store GSAP quickTo functions for performance
+  const xTo = useRef<any>(null);
+  const yTo = useRef<any>(null);
+
+  useGSAP(() => {
+    xTo.current = gsap.quickTo(ref.current, "x", { duration: 0.6, ease: "power3", opacity: 1 });
+    yTo.current = gsap.quickTo(ref.current, "y", { duration: 0.6, ease: "power3", opacity: 1 });
+  }, { scope: ref });
 
   const handleMouse = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (shouldReduceMotion) return;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion || !ref.current) return;
+    
     const { clientX, clientY } = e;
-    const { height, width, left, top } = ref.current!.getBoundingClientRect();
+    const { height, width, left, top } = ref.current.getBoundingClientRect();
     const middleX = clientX - (left + width / 2);
     const middleY = clientY - (top + height / 2);
-    setPosition({ x: middleX * 0.1, y: middleY * 0.1 });
+    
+    if (xTo.current && yTo.current) {
+      xTo.current(middleX * 0.1);
+      yTo.current(middleY * 0.1);
+    }
   };
 
   const reset = () => {
-    if (shouldReduceMotion) return;
-    setPosition({ x: 0, y: 0 });
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) return;
+    
+    if (xTo.current && yTo.current) {
+      xTo.current(0);
+      yTo.current(0);
+    }
   };
 
-  const { x, y } = position;
-
   return (
-    <motion.div
+    <div
       className={`inline-block ${className}`}
       ref={ref}
       onMouseMove={handleMouse}
       onMouseLeave={reset}
-      animate={{ x, y }}
-      transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
